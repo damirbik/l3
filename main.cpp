@@ -12,11 +12,12 @@ struct Node{
     Node(int _value) : value(_value), next(nullptr){}
 };
 
-struct CyclicList{
+struct List{
     Node* first;
     Node* last;
+    int numberOfElements = 0;
 
-    CyclicList() : first(nullptr), last(nullptr){}
+    List() : first(nullptr), last(nullptr){}
 
     bool is_empty(){
         return first == nullptr;
@@ -26,15 +27,18 @@ struct CyclicList{
         Node* currentElement = new Node(value);
         if(is_empty()){
             first = currentElement;
+            last = currentElement;
         }
         currentElement->next = first;
         last->next = currentElement;
         last = currentElement;
+        numberOfElements++;
     }
 
     void insert(int position, int value){
         Node* insertElement = new Node(value);
         Node* currentElement = first;
+        numberOfElements++;
         if(position == 0){
             if(is_empty()){
                 last = insertElement;
@@ -54,6 +58,7 @@ struct CyclicList{
 
     void removeAt(int position){
         Node* currentElement = first;
+        numberOfElements--;
         if(position == 0){
             if(first->next == first){
                 clear();
@@ -81,20 +86,26 @@ struct CyclicList{
         return currentElement->value;
     }
 
+    int count(){
+        return numberOfElements;
+    }
+
     void insertBeforeNegative(){
         Node* currentElement = last;
         short int cycles = 0;
         while (cycles < 2){
-            if(currentElement->next->value < 0){
-                Node* insertElement = new Node(1);
-                insertElement->next = currentElement->next->next;
-                currentElement->next = insertElement;
-                if(currentElement == last){
-                    last = insertElement;
-                }
-            }
             if(currentElement == last){
                 cycles++;
+            }
+            if(currentElement->next->value < 0){
+                numberOfElements++;
+                Node* insertElement = new Node(1);
+                insertElement->next = currentElement->next;
+                currentElement->next = insertElement;
+                if(currentElement == last){
+                    first = insertElement;
+                }
+                currentElement = currentElement->next;
             }
             currentElement = currentElement->next;
         }
@@ -122,6 +133,7 @@ struct CyclicList{
                 else{
                     currentElement->next = currentElement->next->next;
                 }
+                numberOfElements--;
                 delete forDel;
             }
             currentElement = currentElement->next;
@@ -142,6 +154,7 @@ struct CyclicList{
         while (cycles < 2){
             if(currentElement == first){
                 cycles++;
+                currentElement = currentElement->next;
                 continue;
             }
             if(currentElement->value == value){ valueCounter++; }
@@ -151,6 +164,7 @@ struct CyclicList{
     }
 
     void clear(){
+        numberOfElements = 0;
         if(is_empty()){
             return;
         }
@@ -169,43 +183,46 @@ struct CyclicList{
 int main(int argc, char *argv[]){
     //ios_base::sync_with_stdio(0);
     //cin.tie(0); cout.tie(0);
-    CyclicList list;
+    List cyclicList;
     while(1){
         string s;
         cin >> s;
         if(s == "add"){
             int currentValue;
             cin >> currentValue;
-            list.add(currentValue);
+            cyclicList.add(currentValue);
         }
         else if(s == "insert"){
             int currentValue, position;
             cin >> position >> currentValue;
-            list.insert(position, currentValue);
+            cyclicList.insert(position, currentValue);
         }
         else if(s == "removeAt"){
             int position;
             cin >> position;
-            list.removeAt(position);
+            cyclicList.removeAt(position);
         }
         else if(s == "elementAt"){
             int position;
             cin >> position;
-            list.elementAt(position);
+            cout << cyclicList.elementAt(position) << '\n';
+        }
+        else if(s == "count_elements"){
+            cout << cyclicList.count() << '\n';
         }
         else if(s == "insertBeforeNegative"){
-            list.insertBeforeNegative();
+            cyclicList.insertBeforeNegative();
         }
         else if(s == "removeNegative"){
-            list.removeNegative();
+            cyclicList.removeNegative();
         }
         else if(s == "count"){
             int currentValue;
             cin >> currentValue;
-            cout << list.count(currentValue) << '\n';
+            cout << cyclicList.count(currentValue) << '\n';
         }
         else if(s == "clear"){
-            list.clear();
+            cyclicList.clear();
         }
         else if(s == "stop"){
             break;
