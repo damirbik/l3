@@ -91,6 +91,7 @@ struct List{
     }
 
     void insertBeforeNegative(){
+        if(is_empty()){ return; }
         Node* currentElement = last;
         short int cycles = 0;
         while (cycles < 2){
@@ -112,6 +113,7 @@ struct List{
     }
 
     void removeNegative(){
+        if(is_empty()){ return; }
         Node* currentElement = last;
         short int cycles = 0;
         while (cycles < 2){
@@ -123,12 +125,12 @@ struct List{
                         return;
                     }
                     first = first->next;
-                    last->next = first;
+                    currentElement->next = first;
+                    last = currentElement;
                 }
                 else if(currentElement->next == last){
-                    last = currentElement;
                     currentElement->next = first;
-
+                    last = currentElement;
                 }
                 else{
                     currentElement->next = currentElement->next->next;
