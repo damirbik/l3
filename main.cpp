@@ -16,6 +16,7 @@ struct List{
     Node* first;
     Node* last;
     int numberOfElements = 0;
+    pair<Node*, int>lastPoint = make_pair(nullptr, 0);
 
     List() : first(nullptr), last(nullptr){}
 
@@ -33,6 +34,7 @@ struct List{
         last->next = currentElement;
         last = currentElement;
         numberOfElements++;
+        lastPoint = make_pair(last, numberOfElements - 1);
     }
 
     void insert(int position, int value){
@@ -48,9 +50,18 @@ struct List{
             first = insertElement;
             return;
         }
-        for (int i = 0; i < position - 1; ++i) {
-            currentElement = currentElement->next;
+        if(lastPoint.first != nullptr && lastPoint.second <= position - 1){
+            currentElement = lastPoint.first;
+            for (int i = lastPoint.second; i < position - 1; ++i) {
+                currentElement = currentElement->next;
+            }
         }
+        else{
+            for (int i = 0; i < position - 1; ++i) {
+                currentElement = currentElement->next;
+            }
+        }
+        lastPoint = make_pair(currentElement, position - 1);
         insertElement->next = currentElement->next;
         currentElement->next = insertElement;
         if(currentElement == last){ last = insertElement; }
@@ -69,9 +80,18 @@ struct List{
             delete currentElement;
             return;
         }
-        for (int i = 0; i < position - 1; ++i) {
-            currentElement = currentElement->next;
+        if(lastPoint.first != nullptr && lastPoint.second <= position - 1){
+            currentElement = lastPoint.first;
+            for (int i = lastPoint.second; i < position - 1; ++i) {
+                currentElement = currentElement->next;
+            }
         }
+        else{
+            for (int i = 0; i < position - 1; ++i) {
+                currentElement = currentElement->next;
+            }
+        }
+        lastPoint = make_pair(currentElement, position - 1);
         if(currentElement->next == last){ last = currentElement; }
         Node* forDel = currentElement->next;
         currentElement->next = currentElement->next->next;
@@ -80,9 +100,18 @@ struct List{
 
     int elementAt(int position){
         Node* currentElement = first;
-        for (int i = 0; i < position; ++i) {
-            currentElement = currentElement->next;
+        if(lastPoint.first != nullptr && lastPoint.second <= position - 1){
+            currentElement = lastPoint.first;
+            for (int i = lastPoint.second; i < position - 1; ++i) {
+                currentElement = currentElement->next;
+            }
         }
+        else{
+            for (int i = 0; i < position - 1; ++i) {
+                currentElement = currentElement->next;
+            }
+        }
+        lastPoint = make_pair(currentElement, position - 1);
         return currentElement->value;
     }
 
@@ -167,6 +196,7 @@ struct List{
 
     void clear(){
         numberOfElements = 0;
+        lastPoint = make_pair(nullptr, 0);
         if(is_empty()){
             return;
         }
