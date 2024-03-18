@@ -50,14 +50,14 @@ struct List{
             first = insertElement;
             return;
         }
-        if(lastPoint.first != nullptr && lastPoint.second <= position - 1){
+        if(lastPoint.first != nullptr && lastPoint.second <= position - 2){
             currentElement = lastPoint.first;
-            for (int i = lastPoint.second; i < position - 1; ++i) {
+            for (int i = lastPoint.second; i < position - 2; ++i) {
                 currentElement = currentElement->next;
             }
         }
         else{
-            for (int i = 0; i < position - 1; ++i) {
+            for (int i = 0; i < position - 2; ++i) {
                 currentElement = currentElement->next;
             }
         }
