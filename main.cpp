@@ -41,7 +41,7 @@ struct List{
         Node* insertElement = new Node(value);
         Node* currentElement = first;
         numberOfElements++;
-        if(position == 1){
+        if(position == 0){
             if(is_empty()){
                 last = insertElement;
             }
@@ -227,17 +227,17 @@ int main(int argc, char *argv[]){
         else if(s == "insert"){
             int currentValue, position;
             cin >> position >> currentValue;
-            cyclicList.insert(position, currentValue);
+            cyclicList.insert(position + 1, currentValue);
         }
         else if(s == "removeAt"){
             int position;
             cin >> position;
-            cyclicList.removeAt(position);
+            cyclicList.removeAt(position + 1);
         }
         else if(s == "elementAt"){
             int position;
             cin >> position;
-            cout << cyclicList.elementAt(position) << '\n';
+            cout << cyclicList.elementAt(position + 1) << '\n';
         }
         else if(s == "count_elements"){
             cout << cyclicList.count() << '\n';
