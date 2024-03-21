@@ -41,7 +41,7 @@ struct List{
         Node* insertElement = new Node(value);
         Node* currentElement = first;
         numberOfElements++;
-        if(position == 0){
+        if(position == 1){
             if(is_empty()){
                 last = insertElement;
             }
@@ -70,7 +70,7 @@ struct List{
     void removeAt(int position){
         Node* currentElement = first;
         numberOfElements--;
-        if(position == 0){
+        if(position == 1){
             if(first->next == first){
                 clear();
                 return;
